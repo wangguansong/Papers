@@ -1,0 +1,110 @@
+\documentclass[a4paper,UTF8]{ctexart}
+
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage[a4paper,includeheadfoot,margin=2.54cm]{geometry}
+
+\setCJKmainfont[BoldFont = Noto Sans CJK SC]{Noto Sans CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKfamilyfont{zhsong}{Noto Sans CJK SC}
+\setCJKfamilyfont{zhhei}{Noto Sans CJK SC}
+
+\begin{document}
+
+\title{IV and WoE}
+\author{王冠嵩}
+\date{2017-07-22}
+\maketitle
+
+在网上搜索IV和WoE，得到的文献并不多，而且很多重复。在学术论文中也并没有搜出太多信息，相关的书也只有2、3本。可能是因为这个概念是在设计评分卡模型中借用的其他统计概念，并没有在其他领域广泛使用。以下是我对曾看到过的信息的整理。
+
+\section{定义IV和WoE}
+
+\subsection{模型设置}
+
+出于简单，只考虑一个特征变量$X$和一个目标变量$Y$。其中$X$的分布可以为离散、连续或两者混杂，$Y$是取值为0或1的简单二元分类变量。通常我们会面对很多不同的特征变量$X$，需要解决的问题是如何衡量不同的变量$X$预测$Y$的分类（好与坏）的有效程度。
+从另一个角度考虑，问题可以转换为考察在$Y$为$0$和$1$的两组样本中，$X$的（条件）概率分布是否相同，不同的程度有多大。
+IV、KS、以及其他统计量的思路都是通过表达两个条件概率分布的区别或距离大小。 
+
+\section{数学定义}
+IV（Information Value）的数学定义为在$X$定义域上，对一个几率对数（WoE）的加权积分，其中的对数部分即为 Weight of Evidence，或WoE。
+
+\begin{equation} 
+ IV = \int \log \frac{f(x|Y=1)}{f(x|Y=0)} (f(x|Y=1) - f(x|Y=0)) dx 
+\end{equation}
+
+衡量了在Y分别为0或1时，X的两个条件概率分布有多大区别。 区别越大，说明不同Y分类中的X特征分布越不同，即X对Y的分组越有预测能力。
+
+\begin{equation}
+\underbrace{\log \frac{f(Y=1|x)}{f(Y=0|x)}}_{\text{conditional logit}} =
+\underbrace{\log \frac{P[Y=1]}{P[Y=0]}}_{\text{sample log-odds}} + 
+\underbrace{\log \frac{f(x|Y=1)}{f(x|Y=0)}}_{\text{WoE of X}}
+\end{equation}
+
+ 上式中，等式左边即为逻辑回归中的目标变量，右边第一个log项为样本几率常数，第二个log即为WoE。WoE是x的函数，当x使得WoE大于1时，说明这个x会对应（比整体样本）更高概率观测到Y为1；当x使得WoE小于1时，说明这个x会对应更低概率观测到Y为1
+ 
+\subsection{定义的信息理论背景}
+
+另外，也可以从信息相对熵的角度定义IV，可参考文献：（待添加）
+
+\subsection{逻辑回归和朴素贝叶斯方法}
+
+等式两边均为X的函数，所以逻辑回归可以看为是对这个等式的线性拟合。当对这个等式采取其他类型的拟合，则得到了其他分类模型，例如朴素贝叶斯方法（naive Bayes）或GAM。 
+\subsection{概率分布差异距离}
+理论上，IV的定义即为两个条件概率分布的对称KL散度（Kullback–Leibler symmetrised divergence）。KL散度是衡量两个概率分布之间“距离”的统计量。（参考wikipedia）
+
+另一个衡量两个概率分布之间距离的指标为KS统计量（Kolmogorov–Smirnov）。不同于IV对整个概率分布区间内的积分，KS统计量定义为两个概率的累积分布函数之间的最大差值。
+
+
+\section{实际样本估计}
+
+以上是对IV和WoE的理论讨论，在实践中X的条件概率分布是未知的，只能通过样本进行估计。
+
+分组估计WoE及IV：待添加
+
+\subsection{最优分组数}
+
+在分组估计时，如果组数过多，则每组内的条件概率的估计会不准确；如果组数过少，整体求和与实际积分的差别会增大。当存在权衡时，则会存在最优解。
+
+
+
+\section{模拟数据}
+
+假设X服从0～1之间的均匀分布，Y|X服从B(X)分布（概率为X的伯努利分布），即给定X=x，Y为1的概率为x，Y为0的概率为1-x。 计算可得IV=2，KS=0.5。 
+
+
+    
+\begin{thebibliography}{9}
+
+\bibitem{larsen2015}
+  Kim Larsen,
+  \textit{Data Exploration with Weight of Evidence and Information Value in R},
+  2015-08-13\\
+  \url{http://multithreaded.stitchfix.com/blog/2015/08/13/weight-of-evidence/}
+  
+\bibitem{upadhyay2013}
+  Roopam Upadhyay,
+  \textit{Information Value (IV) and Weight of Evidence (WOE) – A Case Study from Banking (Part 4)},
+  2013-10-13\\
+  \url{http://ucanalytics.com/blogs/information-value-and-weight-of-evidencebanking-case/}
+  
+\bibitem{yupeng2016}
+  于鹏,
+  \textit{Feature Selection 相关：一个计算WOE和Information Value的python工具},
+  2016-06-26\\
+  \url{https://zhuanlan.zhihu.com/p/20603744}
+  
+\bibitem{kevin2016}
+  Kevin,
+  \textit{数据挖掘模型中的IV和WOE详解},
+  2016-03-02\\
+  \url{http://blog.csdn.net/kevin7658/article/details/50780391}
+  
+\bibitem{kl_wiki}
+  \textit{KL}
+  
+\bibitem{ks_wiki}
+  \textit{KS}
+
+\end{thebibliography}
+\end{document}
