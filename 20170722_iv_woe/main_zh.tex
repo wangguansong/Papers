@@ -70,41 +70,70 @@ IV（Information Value）的数学定义为在$X$定义域上，对一个几率�
 
 \section{模拟数据}
 
-假设X服从0～1之间的均匀分布，Y|X服从B(X)分布（概率为X的伯努利分布），即给定X=x，Y为1的概率为x，Y为0的概率为1-x。 计算可得IV=2，KS=0.5。 
+假设$X$为0到1之间的均匀分布，$Y|X$服从$B(X)$分布（概率为X的伯努利分布），即给定X=x，Y为1的概率为x，Y为0的概率为1-x。 计算可得IV=2，KS=0.5。 
+\begin{equation}
+  f(x_i|Y_i=1) \approx \frac{f(x_i, Y_i = 1)}{P[Y_i = 1]} =
+  \frac{P[Y_i=1|x_i]\cdot f(x_i)}{P[Y_i=1]} = 2x_i
+\end{equation}
 
+\begin{equation}
+  P[Y_i = 1] = \int^1_0 P[Y_i=1|x]f(x)dx = \int^1_0 x dx = \frac{1}{2}
+\end{equation}
+\begin{equation}
+  P[Y_i = 0] = \frac{1}{2}
+\end{equation}
+
+
+\begin{equation}
+  \text{WoE}(x) = \log \frac{f(x_i|Y=1)}{f(x_i|Y=0)} = \log \frac{2 x_i}{2 (1-x_i)} = \log \frac{x}{1-x}
+\end{equation}
+
+\begin{equation}
+  \text{IV} = \int \log \frac{x}{1-x} (2 x_i - 2 (1-x_i)) dx
+\end{equation}
+
+\begin{equation}
+\end{equation}
 
     
 \begin{thebibliography}{9}
 
-\bibitem{larsen2015}
-  Kim Larsen,
-  \textit{Data Exploration with Weight of Evidence and Information Value in R},
-  2015-08-13\\
-  \url{http://multithreaded.stitchfix.com/blog/2015/08/13/weight-of-evidence/}
-  
-\bibitem{upadhyay2013}
-  Roopam Upadhyay,
-  \textit{Information Value (IV) and Weight of Evidence (WOE) – A Case Study from Banking (Part 4)},
-  2013-10-13\\
-  \url{http://ucanalytics.com/blogs/information-value-and-weight-of-evidencebanking-case/}
-  
-\bibitem{yupeng2016}
-  于鹏,
-  \textit{Feature Selection 相关：一个计算WOE和Information Value的python工具},
-  2016-06-26\\
-  \url{https://zhuanlan.zhihu.com/p/20603744}
-  
-\bibitem{kevin2016}
-  Kevin,
-  \textit{数据挖掘模型中的IV和WOE详解},
-  2016-03-02\\
-  \url{http://blog.csdn.net/kevin7658/article/details/50780391}
-  
-\bibitem{kl_wiki}
-  \textit{KL}
-  
-\bibitem{ks_wiki}
-  \textit{KS}
+  \bibitem{larsen2015}
+    Kim Larsen,
+    \textit{Data Exploration with Weight of Evidence and Information Value in R},
+    2015-08-13\\
+    \url{http://multithreaded.stitchfix.com/blog/2015/08/13/weight-of-evidence/}
+
+  \bibitem{upadhyay2013}
+    Roopam Upadhyay,
+    \textit{Information Value (IV) and Weight of Evidence (WOE) – A Case Study from Banking (Part 4)},
+    2013-10-13\\
+    \url{http://ucanalytics.com/blogs/information-value-and-weight-of-evidencebanking-case/}
+
+  \bibitem{yupeng2016}
+    于鹏,
+    \textit{Feature Selection 相关：一个计算WOE和Information Value的python工具},
+    2016-06-26\\
+    \url{https://zhuanlan.zhihu.com/p/20603744}
+
+  \bibitem{kevin2016}
+    Kevin,
+    \textit{数据挖掘模型中的IV和WOE详解},
+    2016-03-02\\
+    \url{http://blog.csdn.net/kevin7658/article/details/50780391}
+
+  \bibitem{siddiqi2006}
+    Naeem Siddiqi,
+    \textit{Credit Risk Scorecards: Developing and Implementing Intelligent Credit Scoring},
+    2006
+
+  \bibitem{kld_wiki}
+    Wikipedia,
+    \textit{Kullback-Leibler divergence}\\
+    \url{https://en.wikipedia.org/wiki/Kullback\%E2\%80\%93Leibler_divergence}
+
+  \bibitem{ks_wiki}
+    \textit{KS}
 
 \end{thebibliography}
 \end{document}
